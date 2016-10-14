@@ -28,44 +28,48 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.B_Next = new System.Windows.Forms.Button();
-            this.B_Cancel = new System.Windows.Forms.Button();
-            this.label1 = new System.Windows.Forms.Label();
+            this.b_next = new System.Windows.Forms.Button();
+            this.b_cancel = new System.Windows.Forms.Button();
+            this.l_deviceName = new System.Windows.Forms.Label();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.textBox1 = new System.Windows.Forms.TextBox();
-            this.textBox2 = new System.Windows.Forms.TextBox();
-            this.label2 = new System.Windows.Forms.Label();
-            this.textBox3 = new System.Windows.Forms.TextBox();
-            this.label3 = new System.Windows.Forms.Label();
+            this.tB_deviceName = new System.Windows.Forms.TextBox();
+            this.tB_devicePassword = new System.Windows.Forms.TextBox();
+            this.l_devicePassword = new System.Windows.Forms.Label();
+            this.tB_devicePrevPassword = new System.Windows.Forms.TextBox();
+            this.l_devicePrevPassword = new System.Windows.Forms.Label();
+            this.b_back = new System.Windows.Forms.Button();
+            this.l_error = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
-            // B_Next
+            // b_next
             // 
-            this.B_Next.Location = new System.Drawing.Point(516, 426);
-            this.B_Next.Name = "B_Next";
-            this.B_Next.Size = new System.Drawing.Size(75, 23);
-            this.B_Next.TabIndex = 9;
-            this.B_Next.Text = "Next";
-            this.B_Next.UseVisualStyleBackColor = true;
+            this.b_next.Location = new System.Drawing.Point(516, 426);
+            this.b_next.Name = "b_next";
+            this.b_next.Size = new System.Drawing.Size(75, 23);
+            this.b_next.TabIndex = 9;
+            this.b_next.Text = "Next";
+            this.b_next.UseVisualStyleBackColor = true;
+            this.b_next.Click += new System.EventHandler(this.b_next_Click);
             // 
-            // B_Cancel
+            // b_cancel
             // 
-            this.B_Cancel.Location = new System.Drawing.Point(597, 426);
-            this.B_Cancel.Name = "B_Cancel";
-            this.B_Cancel.Size = new System.Drawing.Size(75, 23);
-            this.B_Cancel.TabIndex = 8;
-            this.B_Cancel.Text = "Cancel";
-            this.B_Cancel.UseVisualStyleBackColor = true;
+            this.b_cancel.Location = new System.Drawing.Point(597, 426);
+            this.b_cancel.Name = "b_cancel";
+            this.b_cancel.Size = new System.Drawing.Size(75, 23);
+            this.b_cancel.TabIndex = 8;
+            this.b_cancel.Text = "Cancel";
+            this.b_cancel.UseVisualStyleBackColor = true;
+            this.b_cancel.Click += new System.EventHandler(this.b_cancel_Click);
             // 
-            // label1
+            // l_deviceName
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(363, 139);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(75, 13);
-            this.label1.TabIndex = 10;
-            this.label1.Text = "Device Name:";
+            this.l_deviceName.AutoSize = true;
+            this.l_deviceName.Location = new System.Drawing.Point(363, 139);
+            this.l_deviceName.Name = "l_deviceName";
+            this.l_deviceName.Size = new System.Drawing.Size(75, 13);
+            this.l_deviceName.TabIndex = 10;
+            this.l_deviceName.Text = "Device Name:";
             // 
             // pictureBox1
             // 
@@ -75,61 +79,91 @@
             this.pictureBox1.TabIndex = 11;
             this.pictureBox1.TabStop = false;
             // 
-            // textBox1
+            // tB_deviceName
             // 
-            this.textBox1.Location = new System.Drawing.Point(366, 155);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(225, 20);
-            this.textBox1.TabIndex = 12;
+            this.tB_deviceName.Location = new System.Drawing.Point(366, 155);
+            this.tB_deviceName.Name = "tB_deviceName";
+            this.tB_deviceName.Size = new System.Drawing.Size(225, 20);
+            this.tB_deviceName.TabIndex = 12;
             // 
-            // textBox2
+            // tB_devicePassword
             // 
-            this.textBox2.Location = new System.Drawing.Point(366, 196);
-            this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(225, 20);
-            this.textBox2.TabIndex = 14;
+            this.tB_devicePassword.Location = new System.Drawing.Point(366, 196);
+            this.tB_devicePassword.Name = "tB_devicePassword";
+            this.tB_devicePassword.Size = new System.Drawing.Size(225, 20);
+            this.tB_devicePassword.TabIndex = 14;
             // 
-            // label2
+            // l_devicePassword
             // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(363, 180);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(93, 13);
-            this.label2.TabIndex = 13;
-            this.label2.Text = "Device Password:";
+            this.l_devicePassword.AutoSize = true;
+            this.l_devicePassword.Location = new System.Drawing.Point(363, 180);
+            this.l_devicePassword.Name = "l_devicePassword";
+            this.l_devicePassword.Size = new System.Drawing.Size(93, 13);
+            this.l_devicePassword.TabIndex = 13;
+            this.l_devicePassword.Text = "Device Password:";
             // 
-            // textBox3
+            // tB_devicePrevPassword
             // 
-            this.textBox3.Location = new System.Drawing.Point(366, 239);
-            this.textBox3.Name = "textBox3";
-            this.textBox3.Size = new System.Drawing.Size(225, 20);
-            this.textBox3.TabIndex = 16;
+            this.tB_devicePrevPassword.Location = new System.Drawing.Point(366, 239);
+            this.tB_devicePrevPassword.Name = "tB_devicePrevPassword";
+            this.tB_devicePrevPassword.Size = new System.Drawing.Size(225, 20);
+            this.tB_devicePrevPassword.TabIndex = 16;
+            this.tB_devicePrevPassword.Visible = false;
             // 
-            // label3
+            // l_devicePrevPassword
             // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(363, 223);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(137, 13);
-            this.label3.TabIndex = 15;
-            this.label3.Text = "Device Previous Password:";
+            this.l_devicePrevPassword.AutoSize = true;
+            this.l_devicePrevPassword.Location = new System.Drawing.Point(363, 223);
+            this.l_devicePrevPassword.Name = "l_devicePrevPassword";
+            this.l_devicePrevPassword.Size = new System.Drawing.Size(137, 13);
+            this.l_devicePrevPassword.TabIndex = 15;
+            this.l_devicePrevPassword.Text = "Device Previous Password:";
+            this.l_devicePrevPassword.Visible = false;
+            // 
+            // b_back
+            // 
+            this.b_back.Location = new System.Drawing.Point(435, 426);
+            this.b_back.Name = "b_back";
+            this.b_back.Size = new System.Drawing.Size(75, 23);
+            this.b_back.TabIndex = 17;
+            this.b_back.Text = "Back";
+            this.b_back.UseVisualStyleBackColor = true;
+            this.b_back.Click += new System.EventHandler(this.b_back_Click);
+            // 
+            // l_error
+            // 
+            this.l_error.AutoSize = true;
+            this.l_error.BackColor = System.Drawing.Color.Red;
+            this.l_error.ForeColor = System.Drawing.Color.White;
+            this.l_error.Location = new System.Drawing.Point(367, 273);
+            this.l_error.Margin = new System.Windows.Forms.Padding(0);
+            this.l_error.Name = "l_error";
+            this.l_error.Padding = new System.Windows.Forms.Padding(5);
+            this.l_error.Size = new System.Drawing.Size(224, 62);
+            this.l_error.TabIndex = 18;
+            this.l_error.Text = "Device was alredy configurated with            \r\n another password. \r\nPlease writ" +
+    "e the previous password. \r\nIf you do not remember it, reset the device.";
+            this.l_error.Visible = false;
             // 
             // W3CreateAuthForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(684, 461);
-            this.Controls.Add(this.textBox3);
-            this.Controls.Add(this.label3);
-            this.Controls.Add(this.textBox2);
-            this.Controls.Add(this.label2);
-            this.Controls.Add(this.textBox1);
+            this.Controls.Add(this.l_error);
+            this.Controls.Add(this.b_back);
+            this.Controls.Add(this.tB_devicePrevPassword);
+            this.Controls.Add(this.l_devicePrevPassword);
+            this.Controls.Add(this.tB_devicePassword);
+            this.Controls.Add(this.l_devicePassword);
+            this.Controls.Add(this.tB_deviceName);
             this.Controls.Add(this.pictureBox1);
-            this.Controls.Add(this.label1);
-            this.Controls.Add(this.B_Next);
-            this.Controls.Add(this.B_Cancel);
+            this.Controls.Add(this.l_deviceName);
+            this.Controls.Add(this.b_next);
+            this.Controls.Add(this.b_cancel);
             this.Name = "W3CreateAuthForm";
             this.Text = "W3CreateAuthForm";
+            this.Load += new System.EventHandler(this.W3CreateAuthForm_Load);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -138,14 +172,16 @@
 
         #endregion
 
-        private System.Windows.Forms.Button B_Next;
-        private System.Windows.Forms.Button B_Cancel;
-        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Button b_next;
+        private System.Windows.Forms.Button b_cancel;
+        private System.Windows.Forms.Label l_deviceName;
         private System.Windows.Forms.PictureBox pictureBox1;
-        private System.Windows.Forms.TextBox textBox1;
-        private System.Windows.Forms.TextBox textBox2;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.TextBox textBox3;
-        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.TextBox tB_deviceName;
+        private System.Windows.Forms.TextBox tB_devicePassword;
+        private System.Windows.Forms.Label l_devicePassword;
+        private System.Windows.Forms.TextBox tB_devicePrevPassword;
+        private System.Windows.Forms.Label l_devicePrevPassword;
+        private System.Windows.Forms.Button b_back;
+        private System.Windows.Forms.Label l_error;
     }
 }

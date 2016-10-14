@@ -39,9 +39,9 @@
             this.label1.AutoSize = true;
             this.label1.Location = new System.Drawing.Point(13, 26);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(204, 13);
+            this.label1.Size = new System.Drawing.Size(71, 13);
             this.label1.TabIndex = 0;
-            this.label1.Text = "Currently connect to Wifi Network named:";
+            this.label1.Text = "Wifi Network:";
             // 
             // label2
             // 
@@ -81,6 +81,8 @@
             this.Controls.Add(this.label1);
             this.Name = "DeviceManager";
             this.Text = "DeviceManager";
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.DeviceManager_FormClosed);
+            this.Load += new System.EventHandler(this.DeviceManager_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 

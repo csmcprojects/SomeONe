@@ -32,8 +32,8 @@
             this.B_Next = new System.Windows.Forms.Button();
             this.lB_device_list = new System.Windows.Forms.ListBox();
             this.label1 = new System.Windows.Forms.Label();
+            this.l_error = new System.Windows.Forms.Label();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.l_error_selectdevice = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -60,55 +60,56 @@
             // lB_device_list
             // 
             this.lB_device_list.FormattingEnabled = true;
-            this.lB_device_list.Location = new System.Drawing.Point(338, 103);
+            this.lB_device_list.Location = new System.Drawing.Point(338, 215);
             this.lB_device_list.Name = "lB_device_list";
-            this.lB_device_list.Size = new System.Drawing.Size(253, 212);
+            this.lB_device_list.Size = new System.Drawing.Size(253, 82);
             this.lB_device_list.TabIndex = 2;
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(338, 84);
+            this.label1.Location = new System.Drawing.Point(338, 199);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(95, 13);
+            this.label1.Size = new System.Drawing.Size(219, 13);
             this.label1.TabIndex = 3;
-            this.label1.Text = "Select your device";
+            this.label1.Text = "Select the device that you want to configure.";
+            // 
+            // l_error
+            // 
+            this.l_error.AutoSize = true;
+            this.l_error.BackColor = System.Drawing.Color.Red;
+            this.l_error.ForeColor = System.Drawing.Color.White;
+            this.l_error.Location = new System.Drawing.Point(338, 300);
+            this.l_error.Margin = new System.Windows.Forms.Padding(0);
+            this.l_error.Name = "l_error";
+            this.l_error.Padding = new System.Windows.Forms.Padding(5);
+            this.l_error.Size = new System.Drawing.Size(139, 23);
+            this.l_error.TabIndex = 5;
+            this.l_error.Text = "You must select a device.";
+            this.l_error.Visible = false;
             // 
             // pictureBox1
             // 
-            this.pictureBox1.Location = new System.Drawing.Point(12, 12);
+            this.pictureBox1.Image = global::SomeONe.Properties.Resources.cooltext209842929666486;
+            this.pictureBox1.Location = new System.Drawing.Point(33, 120);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(300, 437);
-            this.pictureBox1.TabIndex = 4;
+            this.pictureBox1.Size = new System.Drawing.Size(244, 177);
+            this.pictureBox1.TabIndex = 6;
             this.pictureBox1.TabStop = false;
             // 
-            // l_error_selectdevice
-            // 
-            this.l_error_selectdevice.AutoSize = true;
-            this.l_error_selectdevice.BackColor = System.Drawing.Color.Red;
-            this.l_error_selectdevice.ForeColor = System.Drawing.Color.White;
-            this.l_error_selectdevice.Location = new System.Drawing.Point(440, 318);
-            this.l_error_selectdevice.Margin = new System.Windows.Forms.Padding(0, 0, 0, 0);
-            this.l_error_selectdevice.Name = "l_error_selectdevice";
-            this.l_error_selectdevice.Padding = new System.Windows.Forms.Padding(5);
-            this.l_error_selectdevice.Size = new System.Drawing.Size(151, 23);
-            this.l_error_selectdevice.TabIndex = 5;
-            this.l_error_selectdevice.Text = "You must select one device.";
-            this.l_error_selectdevice.Visible = false;
-            // 
-            // DeviceSelectionForm
+            // W1DeviceSelectionForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(684, 461);
-            this.Controls.Add(this.l_error_selectdevice);
             this.Controls.Add(this.pictureBox1);
+            this.Controls.Add(this.l_error);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.lB_device_list);
             this.Controls.Add(this.B_Next);
             this.Controls.Add(this.B_Cancel);
-            this.Name = "DeviceSelectionForm";
+            this.Name = "W1DeviceSelectionForm";
             this.Text = "DeviceSelectionForm";
             this.Load += new System.EventHandler(this.DeviceSelectionForm_Load);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
@@ -123,7 +124,7 @@
         private System.Windows.Forms.Button B_Next;
         private System.Windows.Forms.ListBox lB_device_list;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label l_error;
         private System.Windows.Forms.PictureBox pictureBox1;
-        private System.Windows.Forms.Label l_error_selectdevice;
     }
 }

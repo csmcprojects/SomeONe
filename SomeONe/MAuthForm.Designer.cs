@@ -78,6 +78,7 @@
             this.button1.TabIndex = 16;
             this.button1.Text = "Enter";
             this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // B_Cancel
             // 
@@ -87,6 +88,7 @@
             this.B_Cancel.TabIndex = 17;
             this.B_Cancel.Text = "Cancel";
             this.B_Cancel.UseVisualStyleBackColor = true;
+            this.B_Cancel.Click += new System.EventHandler(this.B_Cancel_Click);
             // 
             // MAuthForm
             // 

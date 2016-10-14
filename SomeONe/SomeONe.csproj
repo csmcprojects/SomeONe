@@ -33,6 +33,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="ManagedWifi, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\managedwifi.1.1.0\lib\net20\ManagedWifi.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -85,6 +89,18 @@
     <Compile Include="W3CreateAuthForm.Designer.cs">
       <DependentUpon>W3CreateAuthForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="W4DeviceServerURLForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="W4DeviceServerURLForm.Designer.cs">
+      <DependentUpon>W4DeviceServerURLForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="W5FinalConfigurationForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="W5FinalConfigurationForm.Designer.cs">
+      <DependentUpon>W5FinalConfigurationForm.cs</DependentUpon>
+    </Compile>
     <EmbeddedResource Include="DeviceManager.resx">
       <DependentUpon>DeviceManager.cs</DependentUpon>
     </EmbeddedResource>
@@ -105,6 +121,7 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
     <EmbeddedResource Include="W2WirelessNetworkSelectionAuthForm.resx">
       <DependentUpon>W2WirelessNetworkSelectionAuthForm.cs</DependentUpon>
@@ -112,6 +129,7 @@
     <EmbeddedResource Include="W3CreateAuthForm.resx">
       <DependentUpon>W3CreateAuthForm.cs</DependentUpon>
     </EmbeddedResource>
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -124,6 +142,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\cooltext209842929666486.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
