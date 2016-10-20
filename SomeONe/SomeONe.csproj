@@ -129,6 +129,12 @@
     <EmbeddedResource Include="W3CreateAuthForm.resx">
       <DependentUpon>W3CreateAuthForm.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="W4DeviceServerURLForm.resx">
+      <DependentUpon>W4DeviceServerURLForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="W5FinalConfigurationForm.resx">
+      <DependentUpon>W5FinalConfigurationForm.cs</DependentUpon>
+    </EmbeddedResource>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

@@ -2,12 +2,21 @@
 using System.Collections.Generic;
 using System.IO.Ports;
 using System.Linq;
+using System.Runtime.Remoting.Messaging;
 using System.Text;
 using System.Windows.Forms;
 using SomeONe;
 
 namespace SomeONe
 {
+    public class EspNetworkDescriptior
+    {
+        public string NetworkId { get; set; }
+        public string NetworkName { get; set; }
+        public string SignalStrength { get; set; }
+        public string NetworkType { get; set; }
+    }
+
     public class SomeBool
     {
         
@@ -49,7 +58,7 @@ namespace SomeONe
     {
         public const int DeviceBaudRate = 9600;  // The baud rate of the device serial port.
         public string DevicePort { get; set; } // The device com port name
-        public string DeviceWifiNetwork { get; set; } // The wifi network that the device connects to.
+        public string DeviceWifiNetworkName { get; set; } // The wifi network that the device connects to.
         public string DeviceNetworkUsername { get; set; } // The username required to connect to the network (may be required or not)
         public string DeviceNetworkPassword { get; set; } // The wifi network password.
         public string DeviceUsername { get; set; } // The name of the device.
@@ -80,6 +89,8 @@ namespace SomeONe
         public const string DeviceBoolFResponse = "false";
         public const string EspWifiNetworkAuth = "espwificon";
         public const string NeedsUserAuth = "nuserauth";
+        public const string UserAuth = "tuserauth";
+        public const string RegisterUser = "reguser";
     }
 
     /// <summary>
@@ -102,19 +113,16 @@ namespace SomeONe
         /// <summary>
         /// Opens the connection to the port.
         /// </summary>
-        private void Open()
+        private bool Open()
         {
-            try
+            if (_deviceName.Trim() == "" || _deviceName == null)
             {
-                _port = new SerialPort(_deviceName, SomeONeConfig.DeviceBaudRate);
-                _port.Open();
+                return false;
             }
-            catch (Exception e)
-            {
-                MessageBox.Show(@"SomeONe Error: " + e.Message);
-                throw;
-            }
-            
+            _port = new SerialPort(_deviceName, SomeONeConfig.DeviceBaudRate);
+            if (_port == null) return false;
+            _port.Open();
+            return _port.IsOpen;
         }
 
         /// <summary>
@@ -122,15 +130,8 @@ namespace SomeONe
         /// </summary>
         private void Close()
         {
-            try
-            {
-                _port.Close();
-            }
-            catch (Exception e)
-            {
-                MessageBox.Show(@"SomeONe Error: " + e.Message);
-                throw;
-            }
+            if (_port == null) return;
+            if(_port.IsOpen) _port.Close();
         }
 
         /// <summary>
@@ -148,12 +149,9 @@ namespace SomeONe
         /// <returns>Returns true if the message was sent successfully.</returns>
         private bool SendLine(string message)
         {
-            Open();
-            if (!_port.IsOpen) return false;
             byte[] asciiBytes = Encoding.UTF8.GetBytes(message);
             _port.Write(asciiBytes, 0, asciiBytes.Length);
-            Close();
-            return true;   
+            return true;         
         }
 
         /// <summary>
@@ -163,15 +161,27 @@ namespace SomeONe
         /// <returns>Returns true if a message was received. False if the port was unavailable.</returns>
         private bool ReceiveLine(ref string message)
         {
-            Open();
-            if (!_port.IsOpen) return false;
+            int index = 0;
+            string response = "";
+            string finalResponse = "";
+            int trys = 3;
+            do
+            {
+                if (trys == 0) break;
+                int dataLength = _port.BytesToRead;
+                byte[] data = new byte[dataLength];
+                int nbrDataRead = _port.Read(data, 0, dataLength);
+                response = Encoding.UTF8.GetString(data);
+                finalResponse += response;
+                trys--;
 
-            int dataLength = _port.BytesToRead;
-            byte[] data = new byte[dataLength];
-            int nbrDataRead = _port.Read(data, 0, dataLength);
-            message = Encoding.UTF8.GetString(data);
- 
-            Close();
+            }
+            while (finalResponse.Contains("\r") == false);
+            index = response.IndexOf("\r", StringComparison.Ordinal);
+            if (index > 0)
+                response = response.Substring(0, index);
+            message = response;
+            _port.DiscardInBuffer();
             return true;
         }
 
@@ -181,6 +191,7 @@ namespace SomeONe
         /// <returns>DeviceInfo</returns>
         public SomeONeConfig GetDeviceInfo()
         {
+            //Finish method
             return new SomeONeConfig();
         }
 
@@ -190,14 +201,17 @@ namespace SomeONe
         /// <returns>Returns true if it is a SomeONe device.</returns>
         public bool IsSomeoneDevice()
         {
+            Open();
             if (SendLine(DeviceMessage.AreYouASomeoneDevice))
             {
                 string response = "";
                 if (ReceiveLine(ref response))
                 {
-                    return (response.Replace("\r\n", "").Equals(DeviceMessage.DeviceBoolTResponse));
+                    Close();
+                    return (response.Equals(DeviceMessage.DeviceBoolTResponse));
                 }
             }
+            Close();
             return false;
         }
 
@@ -205,17 +219,44 @@ namespace SomeONe
         /// Sends a message to the device asking if he is a SomeONe device.
         /// </summary>
         /// <returns>Returns true if it is a SomeONe device.</returns>
-        public string[] GetWifiNetworksList()
+        public List<EspNetworkDescriptior> GetWifiNetworksList()
         {
+            Open();
+            List<EspNetworkDescriptior> networkList = new List<EspNetworkDescriptior>();
             if (SendLine(DeviceMessage.GiveMeEspNetworkList))
             {
                 string response = "";
                 if (ReceiveLine(ref response))
                 {
-                    return response.Split(';');
+                    ParseNetworkList(ref response, ref networkList);
+                    Close();
+                    return networkList;
                 }
             }
-            return new string[0];
+            Close();
+            return networkList;
+        }
+
+        private void ParseNetworkList(ref string response, ref List<EspNetworkDescriptior> networkList)
+        {
+            if (response == "") return;
+            if (response == DeviceMessage.GiveMeEspNetworkList) return;
+            //Removes the '{"', '"}' characters from the string
+            response = response.Replace("{\"", "").Replace("\"}", "");
+            //Splits the string in the \n
+           
+
+            var responseLines = response.Split('\n');
+            foreach (var networkInfo in responseLines)
+            {
+                //Fills the data in for each network
+                var data = networkInfo.Split(',');
+                EspNetworkDescriptior descriptor = new EspNetworkDescriptior();
+                descriptor.NetworkId = data[0];
+                descriptor.NetworkType = data[1];
+                descriptor.NetworkName = data[2];
+                networkList.Add(descriptor);
+            }
         }
 
         /// <summary>
@@ -237,25 +278,29 @@ namespace SomeONe
                 messageString = DeviceMessage.EspWifiNetworkAuth + ";" + wifiNetworkName + ";" + wifiNetworkPassword +
                                 ";" + wifiNetworkUsername;
             }
-
+            Open();
             if (SendLine(messageString))
             {
                 string message = "";
                 if (ReceiveLine(ref message))
                 {
+                    Close();
                     return message == DeviceMessage.DeviceBoolTResponse;
                 }
             }
+            Close();
             return false;
         }
 
-        public SomeBool NeedsUserAuth()
+        public SomeBool DeviceNeedsUserAuth()
         {
+            Open();
             if (SendLine(DeviceMessage.NeedsUserAuth))
             {
                 string message = "";
                 if (ReceiveLine(ref message))
                 {
+                    Close();
                     if (message == DeviceMessage.DeviceBoolTResponse)
                     {
                         return new SomeBool(false, "", true);
@@ -273,12 +318,63 @@ namespace SomeONe
                 }
                 else
                 {
+                    Close();
                     return new SomeBool(true, "An error occurred while trying to receive from the device.", true);
                 }
             }
             else
             {
+                Close();
                 return new SomeBool(true, "An error occurred while trying to communicate with the device.", true);
+            }
+        }
+
+        public SomeBool AuthenticateUser(string password)
+        {
+            Open();
+            if (SendLine(DeviceMessage.UserAuth))
+            {
+                string response = "";
+                if (ReceiveLine(ref response))
+                {
+                    Close();
+                    return new SomeBool(false, "", response == DeviceMessage.DeviceBoolTResponse);
+                }
+                else
+                {
+                    Close();
+                    return new SomeBool(true, "Failed to listen the device.", true);
+                }
+            }
+            else
+            {
+                Close();
+                return new SomeBool(true,"Failed to communicate with the device.", true);
+            }
+        }
+
+        public SomeBool CreateUserAuthentication(string deviceName, string devicePassword)
+        {
+            Open();
+            var message = DeviceMessage.RegisterUser + ";" + deviceName + ";" + devicePassword;
+            if (SendLine(message))
+            {
+                string response = "";
+                if (ReceiveLine(ref response))
+                {
+                    Close();
+                    return new SomeBool(false, "", response == DeviceMessage.DeviceBoolTResponse);
+                }
+                else
+                {
+                    Close();
+                    return new SomeBool(true, "Failed to listen the device.", true);
+                }
+            }
+            else
+            {
+                Close();
+                return new SomeBool(true, "Failed to communicate with the device.", true);
             }
         }
     }

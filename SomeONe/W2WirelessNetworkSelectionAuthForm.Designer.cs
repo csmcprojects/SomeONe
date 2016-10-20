@@ -35,6 +35,8 @@
             this.B_Cancel = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
             this.tB_password = new System.Windows.Forms.TextBox();
+            this.tB_username = new System.Windows.Forms.TextBox();
+            this.l_username = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -63,6 +65,7 @@
             this.lB_device_list.Name = "lB_device_list";
             this.lB_device_list.Size = new System.Drawing.Size(253, 95);
             this.lB_device_list.TabIndex = 8;
+            this.lB_device_list.SelectedIndexChanged += new System.EventHandler(this.lB_device_list_SelectedIndexChanged);
             // 
             // B_Next
             // 
@@ -87,7 +90,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(335, 263);
+            this.label2.Location = new System.Drawing.Point(335, 299);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(53, 13);
             this.label2.TabIndex = 11;
@@ -95,11 +98,29 @@
             // 
             // tB_password
             // 
-            this.tB_password.Location = new System.Drawing.Point(338, 279);
+            this.tB_password.Location = new System.Drawing.Point(338, 315);
             this.tB_password.Name = "tB_password";
             this.tB_password.Size = new System.Drawing.Size(253, 20);
             this.tB_password.TabIndex = 12;
             this.tB_password.UseSystemPasswordChar = true;
+            // 
+            // tB_username
+            // 
+            this.tB_username.Location = new System.Drawing.Point(338, 276);
+            this.tB_username.Name = "tB_username";
+            this.tB_username.Size = new System.Drawing.Size(253, 20);
+            this.tB_username.TabIndex = 14;
+            this.tB_username.Visible = false;
+            // 
+            // l_username
+            // 
+            this.l_username.AutoSize = true;
+            this.l_username.Location = new System.Drawing.Point(335, 260);
+            this.l_username.Name = "l_username";
+            this.l_username.Size = new System.Drawing.Size(55, 13);
+            this.l_username.TabIndex = 13;
+            this.l_username.Text = "Username";
+            this.l_username.Visible = false;
             // 
             // W2WirelessNetworkSelectionAuthForm
             // 
@@ -107,6 +128,8 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(684, 461);
+            this.Controls.Add(this.tB_username);
+            this.Controls.Add(this.l_username);
             this.Controls.Add(this.tB_password);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.pictureBox1);
@@ -132,5 +155,7 @@
         private System.Windows.Forms.Button B_Cancel;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TextBox tB_password;
+        private System.Windows.Forms.TextBox tB_username;
+        private System.Windows.Forms.Label l_username;
     }
 }

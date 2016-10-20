@@ -12,10 +12,10 @@ namespace SomeONe
 {
     public partial class W3CreateAuthForm : Form
     {
-        private Form EntryPoint { get; set; }
-        private Form BackForm { get; set; }
+        private EntrypointForm EntryPoint { get; set; }
+        private W2WirelessNetworkSelectionAuthForm BackForm { get; set; }
         private SomeONeConfig Config { get; set; }
-        private int NeedsUserAuth = -1;
+        private bool NeedsUserAuth = true;
 
         public W3CreateAuthForm(EntrypointForm entryForm, W2WirelessNetworkSelectionAuthForm backForm, SomeONeConfig config)
         {
@@ -28,7 +28,25 @@ namespace SomeONe
 
         private void W3CreateAuthForm_Load(object sender, EventArgs e)
         {
-
+            SomeONeSerial port = new SomeONeSerial(Config.DevicePort);
+            var response = port.DeviceNeedsUserAuth();
+            if (response.ErrorFlag)
+            {
+                MessageBox.Show(@"SomeONe Error: " + response.Error);
+            }
+            else
+            {
+                if (response.Result == false)
+                {
+                    l_devicePrevPassword.Visible = true;
+                    tB_devicePrevPassword.Visible = true;
+                    NeedsUserAuth = true;
+                }
+                else
+                {
+                    NeedsUserAuth = false;
+                }
+            }
         }
 
         private void b_back_Click(object sender, EventArgs e)
@@ -41,40 +59,38 @@ namespace SomeONe
         {
             //Check if the device has any authentication already
             SomeONeSerial port = new SomeONeSerial(Config.DevicePort);
-            if (NeedsUserAuth == -1)
+            //If first time checkinf
+            if (NeedsUserAuth == true)
             {
-                var result = port.NeedsUserAuth();
-                if (result.ErrorFlag)
+                if (tB_devicePrevPassword.Text.Trim() != "")
                 {
-                    MessageBox.Show(@"SomeONe Error: " + result.Error);
-                }
-                else
-                {
-                    if (result.Result == true)
+                    var response = port.AuthenticateUser(tB_devicePrevPassword.Text.ToString());
+                    if (response.ErrorFlag)
                     {
-                        l_devicePrevPassword.Visible = true;
-                        tB_devicePrevPassword.Visible = true;
-                        NeedsUserAuth = 1;
-                        return;
+                        MessageBox.Show(@"SomeONe Error: " + response.Error);
                     }
                     else
                     {
-                        NeedsUserAuth = 0;
+                        if (response.Result)
+                        {
+                            if (tB_deviceName.Text.Trim() != "" && tB_devicePassword.Text.Trim() != "")
+                            {
+                                if (tB_deviceName.Text.Contains(';') || tB_devicePassword.Text.Contains(';'))
+                                {
+                                    MessageBox.Show(@"The device name or password cannot have the ; character.");
+                                }
+                                    Config.DeviceUsername = tB_deviceName.Text;
+                                    Config.DevicePassword = tB_devicePassword.Text;
+                                    W4DeviceServerURLForm form = new W4DeviceServerURLForm(EntryPoint, this, Config);
+                                    form.Show();
+                                    this.Dispose();
+                                }
+                            }                           
+                        }
                     }
                 }
-            } else if (NeedsUserAuth == 1)
-            {
-                
-            } else if (NeedsUserAuth == 0)
-            {
-                Config.DeviceUsername = tB_deviceName.Text.ToString();
-                Config.DevicePassword = tB_devicePassword.Text.ToString();
+        }         
 
-            }
-
-           
-            
-        }
 
         private void b_cancel_Click(object sender, EventArgs e)
         {

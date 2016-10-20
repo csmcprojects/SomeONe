@@ -72,26 +72,22 @@ namespace SomeONe
         {
             try
             {
-                string device = "COM1";
-
-                SomeONeConfig config = new SomeONeConfig();
-                SomeONeSerial port = new SomeONeSerial(device);
-                W2WirelessNetworkSelectionAuthForm form1 = new W2WirelessNetworkSelectionAuthForm(
-                        _entrypointForm, this, config);
-                form1.Show();
-                this.Hide();
+                string device = "";
                       
                 if (lB_device_list.SelectedItem != null)  device = lB_device_list.SelectedItem.ToString();
 
-                if (device == null)
+                if (device != null)
                 {
+                  
+                    SomeONeSerial port = new SomeONeSerial(device);
                     if (port.IsSomeoneDevice())
                     {
+                        SomeONeConfig config = new SomeONeConfig();
                         config.DevicePort = device;
                         W2WirelessNetworkSelectionAuthForm form = new W2WirelessNetworkSelectionAuthForm(
                             _entrypointForm, this, config);
                         form.Show();
-                        this.Hide();
+                        this.Dispose();
                     }
                     else
                     {
@@ -110,7 +106,6 @@ namespace SomeONe
             catch (Exception er)
             {
                     MessageBox.Show(@"SomeONe Error: " + er.Message);
-                    throw;
             }
         }
 
