@@ -438,7 +438,7 @@ namespace SomeONe
             //SC;deviceUsername;devicePassword;wifiNetworkName;wifiNetoworkPassword;serverURL
             var message = DeviceMessage.SaveConfig + ";" + config.DeviceUsername + ";" + config.DevicePassword + ";" +
                           config.DeviceWifiNetworkName + ";" + config.DeviceNetworkPassword + ";" +
-                          config.WebInterfaceUrl;
+                          config.WebInterfaceUrl + ";";
 
             if (SendLine(message))
             {

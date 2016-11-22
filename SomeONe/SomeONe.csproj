@@ -50,18 +50,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DeviceManager.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="DeviceManager.Designer.cs">
-      <DependentUpon>DeviceManager.cs</DependentUpon>
-    </Compile>
-    <Compile Include="MAuthForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="MAuthForm.Designer.cs">
-      <DependentUpon>MAuthForm.cs</DependentUpon>
-    </Compile>
     <Compile Include="W1DeviceSelectionForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -101,12 +89,6 @@
     <Compile Include="W5FinalConfigurationForm.Designer.cs">
       <DependentUpon>W5FinalConfigurationForm.cs</DependentUpon>
     </Compile>
-    <EmbeddedResource Include="DeviceManager.resx">
-      <DependentUpon>DeviceManager.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="MAuthForm.resx">
-      <DependentUpon>MAuthForm.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="W1DeviceSelectionForm.resx">
       <DependentUpon>W1DeviceSelectionForm.cs</DependentUpon>
     </EmbeddedResource>
