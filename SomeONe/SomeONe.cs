@@ -13,7 +13,7 @@ namespace SomeONe
     {
         public string NetworkId { get; set; }
         public string NetworkName { get; set; }
-        public string SignalStrength { get; set; }
+        public int SignalStrength { get; set; }
         public string NetworkType { get; set; }
     }
 
@@ -83,14 +83,15 @@ namespace SomeONe
     /// </summary>
     public class DeviceMessage
     {
-        public const string AreYouASomeoneDevice = "som" ;
-        public const string GiveMeEspNetworkList = "espnetlist";
-        public const string DeviceBoolTResponse = "true";
-        public const string DeviceBoolFResponse = "false";
-        public const string EspWifiNetworkAuth = "espwificon";
-        public const string NeedsUserAuth = "nuserauth";
-        public const string UserAuth = "tuserauth";
-        public const string RegisterUser = "reguser";
+        public const string AreYouASomeoneDevice = "AYASD" ;
+        public const string GiveMeEspNetworkList = "GMENL";
+        public const string DeviceBoolTResponse = "DBTR";
+        public const string DeviceBoolFResponse = "DBFR";
+        public const string EspWifiNetworkAuth = "EWNA";
+        public const string NeedsUserAuth = "NUA";
+        public const string UserAuth = "UA";
+        public const string RegisterUser = "RU";
+        public const string SaveConfig = "SC";
     }
 
     /// <summary>
@@ -131,7 +132,7 @@ namespace SomeONe
         private void Close()
         {
             if (_port == null) return;
-            if(_port.IsOpen) _port.Close();
+            if(_port.IsOpen) _port.Dispose();
         }
 
         /// <summary>
@@ -161,20 +162,23 @@ namespace SomeONe
         /// <returns>Returns true if a message was received. False if the port was unavailable.</returns>
         private bool ReceiveLine(ref string message)
         {
-            int index = 0;
+            /*int index = 0;
             string response = "";
             string finalResponse = "";
-            int trys = 3;
+            int trys = 255;
+            int dataLength = _port.BytesToRead;
+            while ((dataLength = _port.BytesToRead) == 0) { }
             do
             {
                 if (trys == 0) break;
-                int dataLength = _port.BytesToRead;
+                dataLength = _port.BytesToRead;
                 byte[] data = new byte[dataLength];
+                
                 int nbrDataRead = _port.Read(data, 0, dataLength);
                 response = Encoding.UTF8.GetString(data);
                 finalResponse += response;
                 trys--;
-
+               
             }
             while (finalResponse.Contains("\r") == false);
             index = response.IndexOf("\r", StringComparison.Ordinal);
@@ -182,7 +186,36 @@ namespace SomeONe
                 response = response.Substring(0, index);
             message = response;
             _port.DiscardInBuffer();
-            return true;
+            return true;*/
+            //Initialize a buffer to hold the received data 
+            System.Threading.Thread.Sleep(10);
+            char _terminator = '\n';
+            string tString = String.Empty;
+
+            do
+            {
+                byte[] buffer = new byte[_port.ReadBufferSize];
+
+                //There is no accurate method for checking how many bytes are read 
+                //unless you check the return from the Read method 
+                int bytesRead = _port.Read(buffer, 0, buffer.Length);
+
+                //For the example assume the data we are received is ASCII data. 
+
+                tString += Encoding.ASCII.GetString(buffer, 0, bytesRead);
+            } while (!tString.Contains("\r\n"));
+           
+            //Check if string contains the terminator  
+            if (tString.IndexOf((char)_terminator) > -1)
+            {
+                //If tString does contain terminator we cannot assume that it is the last character received 
+                message = tString.Substring(0, tString.IndexOf((char)_terminator));
+                message = message.Replace("\r", "");
+                
+                //Do something with workingString
+                return true;
+            }
+            return false;
         }
 
         /// <summary>
@@ -239,25 +272,44 @@ namespace SomeONe
 
         private void ParseNetworkList(ref string response, ref List<EspNetworkDescriptior> networkList)
         {
-            if (response == "") return;
-            if (response == DeviceMessage.GiveMeEspNetworkList) return;
-            //Removes the '{"', '"}' characters from the string
-            response = response.Replace("{\"", "").Replace("\"}", "");
-            //Splits the string in the \n
-           
+            switch (response)
+            {
+                case "":
+                    return;
+                case DeviceMessage.GiveMeEspNetworkList:
+                    return;
+            }
 
-            var responseLines = response.Split('\n');
+            var responseLines = response.Split('#');
             foreach (var networkInfo in responseLines)
             {
-                //Fills the data in for each network
-                var data = networkInfo.Split(',');
+                var networkDataLine = networkInfo.Split('$');
+                if (networkDataLine.Length != 3) continue;
                 EspNetworkDescriptior descriptor = new EspNetworkDescriptior();
-                descriptor.NetworkId = data[0];
-                descriptor.NetworkType = data[1];
-                descriptor.NetworkName = data[2];
+                descriptor.NetworkName = networkDataLine[0];
+                descriptor.NetworkType = networkDataLine[2];
+                var dBm = networkDataLine[1];
+                int quality = 0;
+                int dBmInt = 0;
+                if (dBm != String.Empty)
+                {
+                    dBmInt = Convert.ToInt32(dBm);
+                    if (dBmInt <= -100)
+                    {
+                        quality = 0;
+                    }
+                    else if (dBmInt >= -50)
+                    {
+                        quality = 100;
+                    }
+                }
+                quality = 2 * (dBmInt + 100);
+                descriptor.SignalStrength = quality;
                 networkList.Add(descriptor);
             }
-        }
+               
+         }
+                
 
         /// <summary>
         /// Sends the wifi network credentials for the arduino and tests if the esp connects to the network successfully.
@@ -357,6 +409,37 @@ namespace SomeONe
         {
             Open();
             var message = DeviceMessage.RegisterUser + ";" + deviceName + ";" + devicePassword;
+            if (SendLine(message))
+            {
+                string response = "";
+                if (ReceiveLine(ref response))
+                {
+                    Close();
+                    return new SomeBool(false, "", response == DeviceMessage.DeviceBoolTResponse);
+                }
+                else
+                {
+                    Close();
+                    return new SomeBool(true, "Failed to listen the device.", true);
+                }
+            }
+            else
+            {
+                Close();
+                return new SomeBool(true, "Failed to communicate with the device.", true);
+            }
+        }
+
+        public SomeBool SaveConfig(SomeONeConfig config)
+        {
+            Open();
+
+            //Message Format:
+            //SC;deviceUsername;devicePassword;wifiNetworkName;wifiNetoworkPassword;serverURL
+            var message = DeviceMessage.SaveConfig + ";" + config.DeviceUsername + ";" + config.DevicePassword + ";" +
+                          config.DeviceWifiNetworkName + ";" + config.DeviceNetworkPassword + ";" +
+                          config.WebInterfaceUrl;
+
             if (SendLine(message))
             {
                 string response = "";

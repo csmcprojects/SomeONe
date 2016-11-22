@@ -93,7 +93,8 @@
             this.pictureBox1.Image = global::SomeONe.Properties.Resources.cooltext209842929666486;
             this.pictureBox1.Location = new System.Drawing.Point(33, 120);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(244, 177);
+            this.pictureBox1.Size = new System.Drawing.Size(248, 178);
+            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
             this.pictureBox1.TabIndex = 6;
             this.pictureBox1.TabStop = false;
             // 

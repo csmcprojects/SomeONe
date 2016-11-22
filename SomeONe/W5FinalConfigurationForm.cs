@@ -33,5 +33,22 @@ namespace SomeONe
             l_wifiPassword.Text = Config.DeviceNetworkPassword;
             l_serverUrl.Text = Config.WebInterfaceUrl;
         }
+
+        private void b_Config_Click(object sender, EventArgs e)
+        {
+            SomeONeSerial serial = new SomeONeSerial(Config.DevicePort);
+            var result = serial.SaveConfig(Config);
+            if (result.ErrorFlag)
+            {
+                MessageBox.Show(@"SomeONe device error: " + result.Error);
+            }
+            else
+            {
+                if (result.Result)
+                {
+                    MessageBox.Show(@"Device configured successfully.");
+                }
+            }
+        }
     }
 }

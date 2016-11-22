@@ -34,15 +34,22 @@ namespace SomeONe
         {
             if (IsValidURL(tB_url.Text))
             {
+                //Saves the data
                 Config.WebInterfaceUrl = tB_url.Text;
                 W5FinalConfigurationForm form = new W5FinalConfigurationForm(CancelForm, this, Config);
                 this.Dispose();
+            }
+            else
+            {
+                MessageBox.Show(@"The url is not valid.");
             }
         }
 
         private bool IsValidURL(string url)
         {
-            return true;
+            Uri result;
+            return Uri.TryCreate(url, UriKind.Absolute, out result)
+            && (result.Scheme == Uri.UriSchemeHttp || result.Scheme == Uri.UriSchemeHttps);
         }
 
         private void B_Back_Click(object sender, EventArgs e)

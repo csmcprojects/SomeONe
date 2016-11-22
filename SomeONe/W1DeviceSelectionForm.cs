@@ -20,12 +20,6 @@ namespace SomeONe
 
         public W1DeviceSelectionForm(EntrypointForm entrypointForm)
         {
-            this.Width = 700;
-            this.Height = 500;
-            this.FormBorderStyle = FormBorderStyle.None;
-            this.BackColor = Color.White;
-            this.StartPosition = FormStartPosition.CenterScreen;
-
             _entrypointForm = entrypointForm;
 
             InitializeComponent();
@@ -72,18 +66,24 @@ namespace SomeONe
         {
             try
             {
+                //Saves the name of the port of the selected device
                 string device = "";
                       
+                //Gets the selected device text
                 if (lB_device_list.SelectedItem != null)  device = lB_device_list.SelectedItem.ToString();
 
                 if (device != null)
-                {
-                  
+                {              
+                    //Initializes a serial connection
                     SomeONeSerial port = new SomeONeSerial(device);
+                    //Ask the device if it is a a someONe device
                     if (port.IsSomeoneDevice())
                     {
+                        //Create the config structure with all the necessary data to config the device in the final form
                         SomeONeConfig config = new SomeONeConfig();
+                        //Adds the device port information
                         config.DevicePort = device;
+                        //Goes to next form
                         W2WirelessNetworkSelectionAuthForm form = new W2WirelessNetworkSelectionAuthForm(
                             _entrypointForm, this, config);
                         form.Show();

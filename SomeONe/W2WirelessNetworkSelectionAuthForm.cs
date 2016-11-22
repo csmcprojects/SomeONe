@@ -34,7 +34,6 @@ namespace SomeONe
 
             InitializeComponent();
         }
-
         /// <summary>
         /// Gets the device network list and populates the listbox with the network names
         /// </summary>
@@ -47,7 +46,43 @@ namespace SomeONe
             //Populates the listBox with the available network names;
             foreach (var network in Descriptors)
             {
-                lB_device_list.Items.Add(network.NetworkName);
+                var fString = network.NetworkName;
+                if (network.NetworkType == "2")
+                {
+                    fString += " (WEP)";
+                } else if (network.NetworkType == "4")
+                {
+                    fString += " (WPA2 / PSK)";
+                }
+                else if (network.NetworkType == "5")
+                {
+                    fString += " (WEP)";
+                }
+                else if (network.NetworkType == "7")
+                {
+                    fString += " (Open Network)";
+                }
+                else if (network.NetworkType == "8")
+                {
+                    fString += " (AUTO)";
+                }
+                while (fString.Length < 80)
+                {
+                    fString += " ";
+                }
+                lB_device_list.Items.Add(fString);
+                if (network.SignalStrength > 0 && network.SignalStrength < 25)
+                {
+                    lB_device_list.Items[lB_device_list.Items.Count - 1].BackColor = Color.Red;
+                } else if (network.SignalStrength >= 25 && network.SignalStrength < 60)
+                {
+                    lB_device_list.Items[lB_device_list.Items.Count -1].BackColor = Color.Orange;
+                }
+                else
+                {
+                    lB_device_list.Items[lB_device_list.Items.Count - 1].BackColor = Color.GreenYellow;
+                }
+               
             }
         }
 
@@ -72,20 +107,33 @@ namespace SomeONe
         {
             try
             {
+                //Saves the name of the selected wifi network
                 string wifiNetworkName = "";
-                if (lB_device_list.SelectedItem != null)
-                {
-                    wifiNetworkName = lB_device_list.SelectedItem.ToString();
-                }
-                var wifiNetworkPassword = tB_password.Text;
-                if (wifiNetworkName.Trim() != String.Empty && wifiNetworkPassword.Trim() != String.Empty)
-                {
-                    SomeONeSerial port = new SomeONeSerial(Config.DevicePort);
-                    if (port.IsEspWifiAuthValid(wifiNetworkName, wifiNetworkPassword))
-                    {
-                        Config.DeviceNetworkUsername = wifiNetworkName;
-                        Config.DeviceNetworkPassword = wifiNetworkPassword;
 
+                //Gets the text of the selected network
+                if (lB_device_list.SelectedItems.Count != 0)
+                {
+                    wifiNetworkName = lB_device_list.SelectedItems[0].Text.ToString();
+                }
+                else
+                {
+                    MessageBox.Show(@"You need to select a network to connect.");
+                    return;
+                }
+                //Gets the text of the password
+                var wifiNetworkPassword = tB_password.Text;
+
+                if (wifiNetworkName.Trim() != String.Empty)
+                {
+                    //Creates a serial connection with the device
+                    SomeONeSerial port = new SomeONeSerial(Config.DevicePort);
+                    //Trys to authenticate with the credentials given.
+                    if (port.IsEspWifiAuthValid(wifiNetworkName.Trim(), wifiNetworkPassword))
+                    {
+                        //If the authentication is successfull, save that information.
+                        Config.DeviceNetworkUsername = wifiNetworkName.Trim();
+                        Config.DeviceNetworkPassword = wifiNetworkPassword;
+                        //Go to the next form
                         W3CreateAuthForm form = new W3CreateAuthForm(CancelForm, this, Config);
                         form.Show();
                         this.Hide();
@@ -97,14 +145,13 @@ namespace SomeONe
                 }
                 else
                 {
-                    MessageBox.Show(@"You need to select a network and write the correct password.");
+                    MessageBox.Show(@"You need to select a network and password for authentication.");
                 }
                 
             }
             catch (Exception er)
             {
                 MessageBox.Show(@"SomeONe Error: " + er.Message);
-                throw;
             }
         }
 
@@ -126,9 +173,9 @@ namespace SomeONe
         /// <param name="e"></param>
         private void lB_device_list_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (lB_device_list.SelectedItem != null)
+            if (lB_device_list.SelectedItems[0] != null)
             {
-                var networkName = lB_device_list.SelectedItem.ToString();
+                var networkName = lB_device_list.SelectedItems[0].Text.ToString();
                 if (NetworkNeedsUsername(networkName))
                 {
                     l_username.Visible = true;
@@ -150,6 +197,16 @@ namespace SomeONe
         private bool NetworkNeedsUsername(string networkName)
         {
             return (from network in Descriptors where network.NetworkName == networkName select (network.NetworkType == "3")).FirstOrDefault();
+        }
+
+        private void lB_device_list_DrawItem(object sender, DrawItemEventArgs e)
+        {
+           
+        }
+
+        private void lB_device_list_SelectedIndexChanged_1(object sender, EventArgs e)
+        {
+          
         }
     }
 }

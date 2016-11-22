@@ -5,6 +5,7 @@ using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -28,13 +29,19 @@ namespace SomeONe
 
         private void W3CreateAuthForm_Load(object sender, EventArgs e)
         {
+            //Setup form appearance
+            this.Width = 700;
+            this.Height = 500;
+            this.FormBorderStyle = FormBorderStyle.None;
+            this.BackColor = Color.White;
+            this.StartPosition = FormStartPosition.CenterScreen;
+
+            //Check if the device needs user authentication. If it fails then it will not require a new password.
             SomeONeSerial port = new SomeONeSerial(Config.DevicePort);
+
+            //If the device needs authentication show a textBox to insert the old password.
             var response = port.DeviceNeedsUserAuth();
             if (response.ErrorFlag)
-            {
-                MessageBox.Show(@"SomeONe Error: " + response.Error);
-            }
-            else
             {
                 if (response.Result == false)
                 {
@@ -57,36 +64,47 @@ namespace SomeONe
 
         private void b_next_Click(object sender, EventArgs e)
         {
-            //Check if the device has any authentication already
+            //Creates a serial connection with the device
             SomeONeSerial port = new SomeONeSerial(Config.DevicePort);
-            //If first time checkinf
+            //If user authentication is necessary
             if (NeedsUserAuth == true)
             {
                 if (tB_devicePrevPassword.Text.Trim() != "")
                 {
+                    //Get the old password and test it
                     var response = port.AuthenticateUser(tB_devicePrevPassword.Text.ToString());
                     if (response.ErrorFlag)
                     {
+                        //Device error
                         MessageBox.Show(@"SomeONe Error: " + response.Error);
-                    }
+                    } //end if
                     else
                     {
                         if (response.Result)
                         {
+                            //If old password is valid
                             if (tB_deviceName.Text.Trim() != "" && tB_devicePassword.Text.Trim() != "")
                             {
-                                if (tB_deviceName.Text.Contains(';') || tB_devicePassword.Text.Contains(';'))
+                                //The password only contains numbers and the name only letters
+                                if (Regex.IsMatch(tB_deviceName.Text, @"^[a-zA-Z]+$")|| Regex.IsMatch(tB_devicePassword.Text, @"^[0-9]+$"))
                                 {
-                                    MessageBox.Show(@"The device name or password cannot have the ; character.");
-                                }
+                                    MessageBox.Show(@"The device name can only contain letters and the password can only contain numbers.");
+                                } //end if
+                                    //Adds the information to the configuration structure
                                     Config.DeviceUsername = tB_deviceName.Text;
                                     Config.DevicePassword = tB_devicePassword.Text;
+                                    //Goes to next form
                                     W4DeviceServerURLForm form = new W4DeviceServerURLForm(EntryPoint, this, Config);
                                     form.Show();
                                     this.Dispose();
-                                }
-                            }                           
+                             } //end if
+                         }
+                         else
+                         {
+
                         }
+                    } 
+                    
                     }
                 }
         }         

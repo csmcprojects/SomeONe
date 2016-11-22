@@ -70,6 +70,7 @@
             this.b_Config.TabIndex = 22;
             this.b_Config.Text = "Save";
             this.b_Config.UseVisualStyleBackColor = true;
+            this.b_Config.Click += new System.EventHandler(this.b_Config_Click);
             // 
             // label1
             // 

@@ -30,13 +30,14 @@
         {
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.label1 = new System.Windows.Forms.Label();
-            this.lB_device_list = new System.Windows.Forms.ListBox();
             this.B_Next = new System.Windows.Forms.Button();
             this.B_Cancel = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
             this.tB_password = new System.Windows.Forms.TextBox();
             this.tB_username = new System.Windows.Forms.TextBox();
             this.l_username = new System.Windows.Forms.Label();
+            this.lB_device_list = new System.Windows.Forms.ListView();
+            this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -52,20 +53,11 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(335, 144);
+            this.label1.Location = new System.Drawing.Point(266, 75);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(108, 13);
             this.label1.TabIndex = 9;
             this.label1.Text = "Select a wifi network:";
-            // 
-            // lB_device_list
-            // 
-            this.lB_device_list.FormattingEnabled = true;
-            this.lB_device_list.Location = new System.Drawing.Point(338, 160);
-            this.lB_device_list.Name = "lB_device_list";
-            this.lB_device_list.Size = new System.Drawing.Size(253, 95);
-            this.lB_device_list.TabIndex = 8;
-            this.lB_device_list.SelectedIndexChanged += new System.EventHandler(this.lB_device_list_SelectedIndexChanged);
             // 
             // B_Next
             // 
@@ -122,19 +114,39 @@
             this.l_username.Text = "Username";
             this.l_username.Visible = false;
             // 
+            // lB_device_list
+            // 
+            this.lB_device_list.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.columnHeader1});
+            this.lB_device_list.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.None;
+            this.lB_device_list.HideSelection = false;
+            this.lB_device_list.Location = new System.Drawing.Point(338, 107);
+            this.lB_device_list.MultiSelect = false;
+            this.lB_device_list.Name = "lB_device_list";
+            this.lB_device_list.ShowGroups = false;
+            this.lB_device_list.Size = new System.Drawing.Size(253, 150);
+            this.lB_device_list.TabIndex = 15;
+            this.lB_device_list.UseCompatibleStateImageBehavior = false;
+            this.lB_device_list.View = System.Windows.Forms.View.Details;
+            this.lB_device_list.SelectedIndexChanged += new System.EventHandler(this.lB_device_list_SelectedIndexChanged_1);
+            // 
+            // columnHeader1
+            // 
+            this.columnHeader1.Width = 230;
+            // 
             // W2WirelessNetworkSelectionAuthForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(684, 461);
+            this.Controls.Add(this.lB_device_list);
             this.Controls.Add(this.tB_username);
             this.Controls.Add(this.l_username);
             this.Controls.Add(this.tB_password);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.lB_device_list);
             this.Controls.Add(this.B_Next);
             this.Controls.Add(this.B_Cancel);
             this.Name = "W2WirelessNetworkSelectionAuthForm";
@@ -150,12 +162,13 @@
 
         private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.ListBox lB_device_list;
         private System.Windows.Forms.Button B_Next;
         private System.Windows.Forms.Button B_Cancel;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TextBox tB_password;
         private System.Windows.Forms.TextBox tB_username;
         private System.Windows.Forms.Label l_username;
+        private System.Windows.Forms.ListView lB_device_list;
+        private System.Windows.Forms.ColumnHeader columnHeader1;
     }
 }
