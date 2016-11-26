@@ -19,11 +19,7 @@ namespace SomeONe
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            this.Width = 700;
-            this.Height = 500;
-            this.FormBorderStyle = FormBorderStyle.None;
-            this.BackColor = Color.Navy;
-            this.StartPosition = FormStartPosition.CenterScreen;
+            
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -40,14 +36,19 @@ namespace SomeONe
 
         private void button2_Click(object sender, EventArgs e)
         {
-            MAuthForm frm = new MAuthForm(this);
-            frm.Show();
-            this.Hide();
+        
         }
 
         private void B_Exit_Click(object sender, EventArgs e)
         {
             Application.Exit();
+        }
+
+        private void button2_Click_1(object sender, EventArgs e)
+        {
+            ResetForm frm = new ResetForm(this);
+            frm.Show();
+            this.Hide();
         }
     }
 }
