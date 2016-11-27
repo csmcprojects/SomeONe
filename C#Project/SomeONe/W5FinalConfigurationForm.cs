@@ -42,6 +42,7 @@ namespace SomeONe
             progressBar1.Style = ProgressBarStyle.Marquee;
             b_Back.Enabled = false;
             b_Cancel.Enabled = false;
+            b_Config.Enabled = false;
         }
 
         void StopWaitAnimation()

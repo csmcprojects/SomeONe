@@ -49,7 +49,7 @@
             this.tB_url.Name = "tB_url";
             this.tB_url.Size = new System.Drawing.Size(294, 20);
             this.tB_url.TabIndex = 23;
-            this.tB_url.Text = "/request.php";
+            this.tB_url.Text = "/someone/request.php";
             // 
             // l_username
             // 
@@ -96,7 +96,7 @@
             this.tB_AuthToken.Name = "tB_AuthToken";
             this.tB_AuthToken.Size = new System.Drawing.Size(294, 20);
             this.tB_AuthToken.TabIndex = 26;
-            this.tB_AuthToken.Text = "123456789012345";
+            this.tB_AuthToken.Text = "l0kyOMiL8UZU2GIK";
             // 
             // label1
             // 
@@ -113,7 +113,7 @@
             this.tb_ServerHost.Name = "tb_ServerHost";
             this.tb_ServerHost.Size = new System.Drawing.Size(294, 20);
             this.tb_ServerHost.TabIndex = 28;
-            this.tb_ServerHost.Text = "http://localhost/csmc_front";
+            this.tb_ServerHost.Text = "127.0.0.1";
             // 
             // label2
             // 
@@ -163,6 +163,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(684, 461);
             this.Controls.Add(this.b_GenerateToken);
             this.Controls.Add(this.l_error);

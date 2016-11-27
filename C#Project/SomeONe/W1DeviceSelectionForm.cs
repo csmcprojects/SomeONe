@@ -93,6 +93,7 @@ namespace SomeONe
 
         private void ArduinoQueryCompleted(object sender, RunWorkerCompletedEventArgs runWorkerCompletedEventArgs)
         {
+            StopWaitAnimation();
             if (_queryResult)
             {
                 //Create the config structure with all the necessary data to config the device in the final form
@@ -107,8 +108,7 @@ namespace SomeONe
             }
             else
             {
-                l_error.Text = @"The selected device is not a someONe device."; l_error.Visible = true;
-                StopWaitAnimation();
+                l_error.Text = @"The selected device is not a someONe device."; l_error.Visible = true;             
             }
         }
 

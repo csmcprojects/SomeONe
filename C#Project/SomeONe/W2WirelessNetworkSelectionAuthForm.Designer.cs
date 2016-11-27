@@ -80,6 +80,7 @@
             this.tB_password.Name = "tB_password";
             this.tB_password.Size = new System.Drawing.Size(294, 20);
             this.tB_password.TabIndex = 12;
+            this.tB_password.Text = "5BM49GG7J76";
             this.tB_password.UseSystemPasswordChar = true;
             // 
             // lB_device_list

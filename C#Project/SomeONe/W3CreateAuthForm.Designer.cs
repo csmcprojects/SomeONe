@@ -78,6 +78,7 @@
             this.tB_deviceName.Name = "tB_deviceName";
             this.tB_deviceName.Size = new System.Drawing.Size(262, 20);
             this.tB_deviceName.TabIndex = 12;
+            this.tB_deviceName.Text = "MySecretDevice";
             // 
             // tB_devicePassword
             // 
@@ -85,6 +86,7 @@
             this.tB_devicePassword.Name = "tB_devicePassword";
             this.tB_devicePassword.Size = new System.Drawing.Size(262, 20);
             this.tB_devicePassword.TabIndex = 14;
+            this.tB_devicePassword.Text = "1234";
             // 
             // l_devicePassword
             // 
@@ -101,6 +103,7 @@
             this.tB_devicePrevPassword.Name = "tB_devicePrevPassword";
             this.tB_devicePrevPassword.Size = new System.Drawing.Size(262, 20);
             this.tB_devicePrevPassword.TabIndex = 16;
+            this.tB_devicePrevPassword.Text = "1234";
             this.tB_devicePrevPassword.Visible = false;
             // 
             // l_devicePrevPassword
@@ -160,6 +163,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(684, 461);
             this.Controls.Add(this.progressBar1);
             this.Controls.Add(this.l_title);

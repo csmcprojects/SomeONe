@@ -145,7 +145,7 @@ bool SendDataToServer(){
     //Serial.println("Server response: ");
     while (client.available()) {
       char c = client.read();
-      Serial.write(c);
+     // Serial.write(c);
     }
     //Serial.println("\033[1;32mEnd server response\033[0m\n\n");
   
@@ -194,6 +194,9 @@ bool IsDeviceConfigured(){
 }
 
 bool SaveConfigF(String message){
+  //Resets the device
+  Reset();
+  //Add the new configuration
   bool result = SPIFFS.begin();
   
   // this opens the file "f.txt" in read-mode
@@ -220,7 +223,6 @@ bool SaveConfigF(String message){
   
    f.close();
    
-   Serial.println(DeviceBooleanTResponse);
    isDeviceConfigured = true;
    
    return true;
@@ -324,8 +326,11 @@ void Reset(){
   bool result = SPIFFS.begin();
   SPIFFS.remove("/f.txt");
   SPIFFS.format();
+  //This forces the data to be loaded again
+  //because the LoadConfigData function looks if the networkName
+  //is empty to update the variables
+  networkName = "";
   isDeviceConfigured = false;
-  Serial.println(DeviceBooleanTResponse);
 }
 
 //Loop that is called when the device is being configured.
@@ -354,12 +359,18 @@ void SetupDevice(){
       }else if (message.substring(0, 2) == UserAuth){
         AuthenticateUser(message);
       } else if (message.substring(0, 2) == SaveConfig){
-          if(SaveConfigF(message)){
+          if(SaveConfigF(message)){          
+             Serial.println(DeviceBooleanTResponse);
              break;
+          } else {
+            Serial.println(DeviceBooleanFResponse);
+            break;
           }
       //Reset arduino
       } else if(message == ResetDevice){
-        Reset();break;      
+        Reset();       
+        Serial.println(DeviceBooleanTResponse);
+        break;      
       } else {
         Serial.println(DeviceBooleanFResponse);
       }
