@@ -23,10 +23,14 @@ You can use different methods to signal the presence of a person in the room. A 
 The only requirement is that the circuit is closed, what closes the circuit can be anything you want. In the future more analog circuits and versions may be added, or you can fork the project and add your own versions.
 
 Check the wiki for more detailed information.
+https://github.com/csmcprojects/SomeONe/wiki/Hardware
 
 # Software
 
 In order to configure the device a c# program was developed. The program was only tested in windows environment, but it may work in linux using the mono project, but I'm not sure of that.
+
+Check the wiki for more detailed information.
+https://github.com/csmcprojects/SomeONe/wiki/Software
 
 # Comming soon
 
