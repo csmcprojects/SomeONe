@@ -32,7 +32,7 @@ In order to configure the device a c# program was developed. The program was onl
 Check the wiki for more detailed information.
 https://github.com/csmcprojects/SomeONe/wiki/Software
 
-# Comming soon
+# Fun to have
 
 1. 3D printer case for storing the wemos board and analog circuit using a simple switch as the detection method.
 2. Expansion of the current system to allow for the use of RFID cards and user log.
